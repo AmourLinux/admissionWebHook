@@ -1,0 +1,52 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: amourlinux-admission
+webhooks:
+- name: amourlinux-admission.k8s.io
+  rules:
+  - apiGroups:
+    - "*"
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    resources:
+    - pods
+    scope: "Namespaced"
+  clientConfig:
+    service:
+      namespace: kube-system
+      name: amourlinux-admission
+      path: /always-deny
+      port: 443
+#    url: https://192.168.0.111:443/always-deny
+    caBundle: <ca.pem base64-encode>
+  admissionReviewVersions:
+  - v1beta1
+  timeoutSeconds: 5
+  failurePolicy: Fail
+  matchPolicy: Exact
+  sideEffects: Unknown
+  namespaceSelector:
+    matchExpressions:
+    - key: amourlinux.k8s.io/ns
+      operator: In
+      values:
+      - default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: amourlinux-admission
+  name: amourlinux-admission
+  namespace: kube-system
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    run: amourlinux-admission
+  type: ClusterIP
