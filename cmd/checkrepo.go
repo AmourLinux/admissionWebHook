@@ -13,7 +13,7 @@ import (
 
 // checkRepo check image repo.
 func checkRepo(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
-	klog.V(2).Info("calling checkRepo")
+	klog.V(2).Infoln("calling checkRepo")
 	podResource := metav1.GroupVersionResource{Group: "", Version: "v1", Resource: "pods"}
 	if ar.Request.Resource != podResource {
 		err := fmt.Errorf("expect resource to be %s", podResource)
@@ -45,6 +45,10 @@ func checkRepo(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 
 	if !reviewResponse.Allowed {
 		reviewResponse.Result = &metav1.Status{Message: strings.TrimSpace(msg)}
+		klog.Errorf("reject pod %s/%s\n", pod.Namespace, pod.Name)
+	} else {
+		klog.V(2).Infof("accept pod %s/%s\n", pod.Namespace, pod.Name)
 	}
+
 	return &reviewResponse
 }

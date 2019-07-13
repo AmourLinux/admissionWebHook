@@ -127,17 +127,25 @@ func serveMutateCustomResource(w http.ResponseWriter, r *http.Request) {
 	serve(w, r, mutateCustomResource)
 }
 
-func serveCRD(w http.ResponseWriter, r *http.Request) {
-	serve(w, r, admitCRD)
-}
+//func serveCRD(w http.ResponseWriter, r *http.Request) {
+//	serve(w, r, admitCRD)
+//}
 
 func serveCheckRepo(w http.ResponseWriter, r *http.Request) {
 	serve(w, r, checkRepo)
 }
 
 func main() {
+	var err error
 	var config Config
-	config.addFlags()
+	config.InitFlags()
+
+	klog.InitFlags(flag.CommandLine)
+	err = flag.Set("v", "2")
+	if err != nil {
+		panic(err)
+	}
+
 	flag.Parse()
 
 	http.HandleFunc("/always-deny", serveAlwaysDeny)
@@ -149,11 +157,16 @@ func main() {
 	http.HandleFunc("/mutating-configmaps", serveMutateConfigmaps)
 	http.HandleFunc("/custom-resource", serveCustomResource)
 	http.HandleFunc("/mutating-custom-resource", serveMutateCustomResource)
-	http.HandleFunc("/crd", serveCRD)
+	//http.HandleFunc("/crd", serveCRD)
 	http.HandleFunc("/pods/check-repo", serveCheckRepo)
 	server := &http.Server{
 		Addr:      ":443",
 		TLSConfig: configTLS(config),
 	}
-	server.ListenAndServeTLS("", "")
+
+	klog.V(2).Infoln("Server started port: 443")
+
+	if err := server.ListenAndServeTLS("", ""); err != nil {
+		panic(err)
+	}
 }

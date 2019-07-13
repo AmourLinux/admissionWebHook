@@ -29,7 +29,7 @@ type Config struct {
 	KeyFile  string
 }
 
-func (c *Config) addFlags() {
+func (c *Config) InitFlags() {
 	flag.StringVar(&c.CertFile, "tls-cert-file", c.CertFile, ""+
 		"File containing the default x509 Certificate for HTTPS. (CA cert, if any, concatenated "+
 		"after server cert).")
