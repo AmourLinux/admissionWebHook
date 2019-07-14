@@ -145,13 +145,11 @@ func main() {
 	config.InitFlags()
 
 	klog.InitFlags(flag.CommandLine)
-	err = flag.Set("v", "2")
-	if err != nil {
-		panic(err)
+	if err = flag.Set("v", "2"); err != nil {
+		klog.Fatalf("Failed to set flag: %v\n", err)
 	}
-	err = flag.Set("logtostderr", "true")
-	if err != nil {
-		panic(err)
+	if err = flag.Set("logtostderr", "true"); err != nil {
+		klog.Fatalf("Failed to set flag: %v\n", err)
 	}
 
 	flag.Parse()
