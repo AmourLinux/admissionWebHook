@@ -17,11 +17,15 @@ limitations under the License.
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -164,9 +168,17 @@ func main() {
 		TLSConfig: configTLS(config),
 	}
 
+	go func() {
+		if err := server.ListenAndServeTLS("", ""); err != nil {
+			klog.Fatalf("Failed to listen and serve webhook server: %v\n", err)
+		}
+	}()
 	klog.V(2).Infoln("Server started port: 443")
 
-	if err := server.ListenAndServeTLS("", ""); err != nil {
-		panic(err)
-	}
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGTERM, syscall.SIGINT)
+	<-signalChan
+
+	klog.V(2).Infof("Got OS shutdown signal, shutting down webhook server gracefully...\n")
+	server.Shutdown(context.Background())
 }
