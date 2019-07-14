@@ -149,6 +149,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	err = flag.Set("logtostderr", "true")
+	if err != nil {
+		panic(err)
+	}
 
 	flag.Parse()
 

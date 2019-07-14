@@ -1,6 +1,6 @@
 from golang:1.11.5
 
-copy webhook /go/bin/webhook
+copy cmd/webhook /go/bin/webhook
 copy go-pki /data/go-pki
 
 entrypoint ["/go/bin/webhook"]
