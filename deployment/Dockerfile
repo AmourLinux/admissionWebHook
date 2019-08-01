@@ -10,7 +10,7 @@ workdir /go/src/admissionWebhook
 run go mod init admissionWebhook
 
 workdir /go/src/admissionWebhook/cmd
-entrypoint ["go build -o admissionwebhook ."]
+run go build -o admissionwebhook .
 
 
 
