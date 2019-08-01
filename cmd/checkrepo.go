@@ -45,7 +45,7 @@ func checkRepo(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 
 	if !reviewResponse.Allowed {
 		reviewResponse.Result = &metav1.Status{Message: strings.TrimSpace(msg)}
-		klog.Errorf("reject pod %s/%s\n", pod.Namespace, pod.Name)
+		klog.Warningf("reject pod %s/%s\n", pod.Namespace, pod.Name)
 	} else {
 		klog.V(2).Infof("accept pod %s/%s\n", pod.Namespace, pod.Name)
 	}

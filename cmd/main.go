@@ -141,7 +141,10 @@ func serveCheckRepo(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var err error
-	var config Config
+	var config = Config{
+		CertFile: "/Users/caipengfei/Applications/goTemp/pki/amourlinux-admission.pem",
+		KeyFile: "/Users/caipengfei/Applications/goTemp/pki/amourlinux-admission-key.pem",
+	}
 	config.InitFlags()
 
 	klog.InitFlags(flag.CommandLine)

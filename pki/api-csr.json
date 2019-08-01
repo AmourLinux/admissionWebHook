@@ -1,0 +1,20 @@
+{
+    "CN": "api",
+    "hosts": [
+      "127.0.0.1",
+      "localhost"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "ST": "BeiJing",
+            "L": "BeiJing",
+            "O": "ok",
+            "OU": "Devops"
+        }
+    ]
+}

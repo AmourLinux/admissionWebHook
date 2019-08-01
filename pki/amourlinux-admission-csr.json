@@ -1,0 +1,20 @@
+{
+    "CN": "amourlinux-admission.kube-system.svc",
+    "hosts": [
+	"amourlinux-admission.kube-system.svc",
+        "amourlinux-admission.cpf.local"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "ST": "BeiJing",
+            "L": "BeiJing",
+            "O": "ok",
+            "OU": "Devops"
+        }
+    ]
+}
