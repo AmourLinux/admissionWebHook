@@ -8,7 +8,7 @@ env GO111MODULE on
 
 workdir /go/src/admissionWebhook/cmd
 
-entrypoint ["go build ."]
+entrypoint ["go build . -o admissionwebhook"]
 
 
 
