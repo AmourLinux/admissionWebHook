@@ -6,9 +6,11 @@ copy pki /go/src/admissionWebhook/pki
 env GOPROXY https://goproxy.io
 env GO111MODULE on
 
-workdir /go/src/admissionWebhook/cmd
+workdir /go/src/admissionWebhook
+run go mod init admissionWebhook
 
-entrypoint ["go build . -o admissionwebhook"]
+workdir /go/src/admissionWebhook/cmd
+entrypoint ["go build -o admissionwebhook ."]
 
 
 
@@ -20,5 +22,4 @@ copy --from=builder /go/src/admissionWebhook/cmd/admissionwebhook /go/bin/admiss
 copy pki /data/pki
 
 entrypoint ["/go/bin/admissionwebhook"]
-
 cmd ["--tls-cert-file", "/data/pki/amourlinux-admission.pem", "--tls-private-key-file", "/data/pki/amourlinux-admission-key.pem"]
